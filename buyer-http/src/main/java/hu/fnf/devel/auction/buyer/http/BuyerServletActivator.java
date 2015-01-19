@@ -12,7 +12,7 @@ import org.osgi.service.http.NamespaceException;
 import javax.servlet.ServletException;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 18/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 18/01/15.c
  */
 public class BuyerServletActivator implements BundleActivator, ServiceListener {
     private BundleContext bundleContext;
