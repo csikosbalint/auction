@@ -2,6 +2,8 @@ package hu.fnf.devel.auction.buyer.http;
 
 import hu.fnf.devel.auction.api.Auction;
 import hu.fnf.devel.auction.api.Participant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -18,6 +20,7 @@ public class BidderServlet implements Servlet, Participant {
     private Auction auction;
     private String name;
     private PrintWriter writer;
+    private Logger logger = LoggerFactory.getLogger( BidderServlet.class );
 
     public BidderServlet(String name) {
         this.name = name;
@@ -48,6 +51,8 @@ public class BidderServlet implements Servlet, Participant {
     public void service(ServletRequest req, ServletResponse resp)
             throws ServletException, IOException {
 
+        logger.info( "serving with Auction ServiceInstance: " + auction.toString() );
+
         String bidValue =
                 req.getParameter("bid");
 
@@ -62,7 +67,7 @@ public class BidderServlet implements Servlet, Participant {
                 Float price = new Float(bidValue);
                 auction.bid(item, price, this);
 
-                writer.println("Accepted bid of "
+                logger.info("Accepted bid of "
                         + bidValue + " for item " + item);
             }
         } catch (Exception e) {
@@ -71,11 +76,11 @@ public class BidderServlet implements Servlet, Participant {
     }
 
     public void onAcceptance(Auction auction, String item, float price) {
-        writer.println(this.name + " was awarded " + item + " for " + price);
+        logger.info(this.name + " was awarded " + item + " for " + price);
     }
 
     public void onRejection(Auction auction, String item, float bestBid) {
-        writer.println("Bid for " + item + " from " + name + " was rejected");
+        logger.info("Bid for " + item + " from " + name + " was rejected");
     }
 
 }

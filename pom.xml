@@ -9,14 +9,19 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>auction-api</module>
-        <module>auction-spi</module>
+        <module>api</module>
+        <module>spi</module>
         <module>seller-simple</module>
         <module>auctioneer-sealed</module>
-        <module>sealed-auditor</module>
+        <module>auditor-sealed</module>
         <module>manager</module>
         <module>buyer-http</module>
+        <module>package</module>
     </modules>
+
+    <properties>
+        <karaf.deploy>/home/johnnym/Tools/apache-karaf-3.0.2/deploy</karaf.deploy>
+    </properties>
 
     <dependencyManagement>
         <dependencies>

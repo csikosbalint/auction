@@ -1,5 +1,7 @@
 package hu.fnf.devel.auction.buyer.http;
 
+import javax.servlet.ServletException;
+
 import hu.fnf.devel.auction.api.Auction;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -8,8 +10,8 @@ import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
-
-import javax.servlet.ServletException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 18/01/15.c
@@ -18,6 +20,7 @@ public class BuyerServletActivator implements BundleActivator, ServiceListener {
     private BundleContext bundleContext;
     private BidderServlet bidderServlet = new BidderServlet("Http Bidder");
     private HttpService httpService;
+    private Logger logger = LoggerFactory.getLogger( BuyerServletActivator.class );
 
     public void start(BundleContext bundleContext) throws Exception {
 
@@ -65,18 +68,27 @@ public class BuyerServletActivator implements BundleActivator, ServiceListener {
 
     private void start(ServiceReference serviceReference)
             throws ServletException, NamespaceException {
+        logger.info( "Auction ServiceReference: " + serviceReference.toString() );
         Auction auction = (Auction)
                 bundleContext.getService(serviceReference);
 
         if (auction != null) {
             bidderServlet.setAuction(auction);
+            logger.info( "Auction ServiceInstance: " + auction.toString() );
 
             ServiceReference ref =
                     bundleContext.getServiceReference(HttpService.class.getName());
+            logger.info( "Auction ServiceInstance: " + auction.toString() );
 
+            logger.info( "HttpService ServiceReference: " + ref.toString() );
             httpService =
                     (HttpService) bundleContext.getService(ref);
+
+            logger.info( "HttpService ServiceInstance: " + httpService.toString() );
+
             httpService.registerServlet("/bidder", bidderServlet, null, null);
+
+            logger.info( "bidder is registeres!" );
         }
     }
 

@@ -9,6 +9,8 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class AuctionManagerActivator implements BundleActivator, ServiceListener
             new HashMap<ServiceReference, ServiceRegistration>();
     private Map<ServiceReference, Auditor> registeredAuditors =
             new HashMap<ServiceReference, Auditor>();
+    private Logger logger = LoggerFactory.getLogger( AuctionManagerActivator.class );
 
     public void start(BundleContext bundleContext) throws Exception {
         this.bundleContext = bundleContext;
@@ -34,9 +37,11 @@ public class AuctionManagerActivator implements BundleActivator, ServiceListener
 
         ServiceReference[] references =
                 bundleContext.getServiceReferences((String) null, auctionOrAuctioneerFilter);
+
         if (references != null) {
             for (ServiceReference serviceReference : references) {
-                registerService(serviceReference);
+                logger.info( "Auctioneer or Auditor ServiceReference: " + references.toString() );
+                registerService( serviceReference );
             }
         }
 
@@ -81,9 +86,7 @@ public class AuctionManagerActivator implements BundleActivator, ServiceListener
 
         {
             registerAuctioneer(serviceReference, (Auctioneer) serviceObject);
-        } else
-
-        {
+        } else {
             registerAuditor(serviceReference, (Auditor) serviceObject);
         }
 
@@ -91,6 +94,7 @@ public class AuctionManagerActivator implements BundleActivator, ServiceListener
 
     private void registerAuditor(ServiceReference auditorServiceReference, Auditor auditor) {
         registeredAuditors.put(auditorServiceReference, auditor);
+        logger.info( "Auditor ServiceInstance added to map: " + auditor.toString() );
     }
 
     private void registerAuctioneer(ServiceReference auctioneerServiceReference,
@@ -101,7 +105,7 @@ public class AuctionManagerActivator implements BundleActivator, ServiceListener
         ServiceRegistration auctionServiceRegistration =
                 bundleContext.registerService(Auction.class.getName(),
                         auction, auctioneer.getAuctionProperties());
-
+        logger.info( "Service registered: " + auction.toString() + " at " + auctionServiceRegistration );
         registeredAuctions.put(auctioneerServiceReference, auctionServiceRegistration);
     }
 
@@ -115,6 +119,7 @@ public class AuctionManagerActivator implements BundleActivator, ServiceListener
 
         if (auctionServiceRegistration != null) {
             auctionServiceRegistration.unregister();
+            logger.info( "Service unregistered: " + auctionServiceRegistration );
         }
     }
 

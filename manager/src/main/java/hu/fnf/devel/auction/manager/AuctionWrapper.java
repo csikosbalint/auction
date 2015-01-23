@@ -5,6 +5,8 @@ import hu.fnf.devel.auction.api.InvalidOfferException;
 import hu.fnf.devel.auction.api.Participant;
 import hu.fnf.devel.auction.spi.Auctioneer;
 import hu.fnf.devel.auction.spi.Auditor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ public class AuctionWrapper implements Auction {
     private Map<String, List<Float>> bidsPerItem =
             new HashMap<String, List<Float>>();
     private float ask;
+    private Logger logger = LoggerFactory.getLogger( AuctionWrapper.class );
 
     class ParticipantWrapper implements Participant {
 
@@ -57,6 +60,8 @@ public class AuctionWrapper implements Auction {
     }
 
     public AuctionWrapper(Auctioneer delegate, Collection<Auditor> auditors) {
+        logger.info( "My delegate: " + delegate.toString() );
+        logger.info( "My auditors: " + auditors.toString() );
         this.delegate = delegate;
         this.auditors = auditors;
     }
@@ -64,12 +69,17 @@ public class AuctionWrapper implements Auction {
     public Float ask(String item, float price, Participant seller)
             throws InvalidOfferException {
         ask = price;
+        logger.info( "I am " + this.toString() + " recv ask");
+        logger.info( "My delegate service " + delegate.toString() + " recv ask");
         return delegate.getAuction().ask(item, price,
                 new ParticipantWrapper(seller));
     }
 
     public Float bid(String item, float price, Participant buyer)
             throws InvalidOfferException {
+
+        logger.info( "I am " + this.toString() + " recv bid");
+        logger.info( "My delegate service " + delegate.toString() + " recv bid");
         List<Float> bids = bidsPerItem.get(item);
         if (bids == null) {
             bids = new LinkedList<Float>();

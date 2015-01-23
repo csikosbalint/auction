@@ -7,6 +7,8 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 18/01/15.
@@ -14,6 +16,8 @@ import org.osgi.util.tracker.ServiceTracker;
 public class SellerActivator implements BundleActivator, ServiceListener {
         private BundleContext bundleContext;
     private Seller seller = new Seller("Seller 1");
+
+    private Logger logger = LoggerFactory.getLogger( SellerActivator.class );
 
     public void start(BundleContext bundleContext) throws Exception {
 
@@ -66,9 +70,10 @@ public class SellerActivator implements BundleActivator, ServiceListener {
         }
     }
     private void ask(ServiceReference serviceReference) {
+        logger.info( "Auction ServiceReference: " + serviceReference.toString() );
         Auction auction = (Auction)
             bundleContext.getService(serviceReference);
-
+        logger.info( "Auction ServiceInstance: " + auction.toString() );
         if (auction != null) {
             seller.ask(auction);
             bundleContext.ungetService(serviceReference);

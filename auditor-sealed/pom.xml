@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>auction-spi</artifactId>
+    <artifactId>auditor-sealed</artifactId>
 
     <packaging>bundle</packaging>
 
@@ -19,8 +19,21 @@
             <artifactId>auction-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>hu.fnf.devel</groupId>
+            <artifactId>auction-spi</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
@@ -29,9 +42,9 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Export-Package>
-                            hu.fnf.devel.auction.spi
-                        </Export-Package>
+                        <Bundle-Activator>
+                            hu.fnf.devel.auction.auditor.sealed.SealedFirstPriceAuditorActivator
+                        </Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>
