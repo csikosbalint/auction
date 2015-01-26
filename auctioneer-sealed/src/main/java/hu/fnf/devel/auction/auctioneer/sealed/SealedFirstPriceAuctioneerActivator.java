@@ -1,4 +1,4 @@
-package hu.fnf.devel.acution.auctioneer.sealed;
+package hu.fnf.devel.auction.auctioneer.sealed;
 
 import hu.fnf.devel.auction.spi.Auctioneer;
 import org.osgi.framework.BundleActivator;

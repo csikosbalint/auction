@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <reference id="auctionRef"
+               interface="hu.fnf.devel.auction.api.Auction"
+               filter="(auction-type=Sealed-First-Price)"/>
+
+    <reference id="httpRef"
+               interface="org.osgi.service.http.HttpService"/>
+
+    <bean id="seller"
+          class="hu.fnf.devel.auction.buyer.http.BuyerServletActivator"
+          init-method="init">
+        <property name="auctionServiceInstance" ref="auctionRef"/>
+        <property name="httpServiceInstance" ref="httpRef"/>
+    </bean>
+
+</blueprint>

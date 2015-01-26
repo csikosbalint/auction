@@ -43,7 +43,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-Activator>
-                            hu.fnf.devel.acution.auctioneer.sealed.SealedFirstPriceAuctioneerActivator
+                            hu.fnf.devel.auction.auctioneer.sealed.SealedFirstPriceAuctioneerActivator
                         </Bundle-Activator>
                     </instructions>
                 </configuration>

@@ -51,9 +51,9 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Bundle-Activator>
-                            hu.fnf.devel.auction.buyer.http.BuyerServletActivator
-                        </Bundle-Activator>
+                        <!--<Bundle-Activator>-->
+                            <!--hu.fnf.devel.auction.buyer.http.BuyerServletActivator-->
+                        <!--</Bundle-Activator>-->
                     </instructions>
                 </configuration>
             </plugin>
